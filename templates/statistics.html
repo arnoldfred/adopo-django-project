@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistiques - ProjectHub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed left-0 top-0 bg-white shadow-xl transition-all duration-300 w-64 h-screen border-r-4 border-yellow-400 z-50">
+        <div class="p-4 border-b border-yellow-100">
+            <div class="flex items-center justify-between">
+                <h1 class="text-xl font-bold text-gray-800">
+                    <span class="text-yellow-500">Project</span>Hub
+                </h1>
+                <button onclick="toggleSidebar()" class="p-2 rounded-lg hover:bg-yellow-50 transition-colors">
+                    <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <nav class="mt-8">
+            {# Accueil #}
+            <a href="{% url 'home' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'home' %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'home' %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'home' %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                </svg>
+                <span class="ml-3 font-medium">Accueil</span>
+            </a>
+
+            {# Projets #}
+            <a href="{% url 'projects' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'projects' or request.resolver_match.url_name == 'project_create' or request.resolver_match.url_name == 'project_create_htmx' or 'project_edit' in request.resolver_match.url_name or 'project_delete' in request.resolver_match.url_name or 'project_tasks' in request.resolver_match.url_name %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'projects' or request.resolver_match.url_name == 'project_create' or request.resolver_match.url_name == 'project_create_htmx' or 'project_edit' in request.resolver_match.url_name or 'project_delete' in request.resolver_match.url_name or 'project_tasks' in request.resolver_match.url_name %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'projects' or request.resolver_match.url_name == 'project_create' or request.resolver_match.url_name == 'project_create_htmx' or 'project_edit' in request.resolver_match.url_name or 'project_delete' in request.resolver_match.url_name or 'project_tasks' in request.resolver_match.url_name %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                </svg>
+                <span class="ml-3 font-medium">Projets</span>
+            </a>
+
+            {# Tâches #}
+            <a href="{% url 'tasks' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'tasks' or request.resolver_match.url_name == 'task_create' or 'project_tasks' in request.resolver_match.url_name or 'task_edit' in request.resolver_match.url_name or 'task_delete' in request.resolver_match.url_name or 'toggle_task_status' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'tasks' or request.resolver_match.url_name == 'task_create' or 'project_tasks' in request.resolver_match.url_name or 'task_edit' in request.resolver_match.url_name or 'task_delete' in request.resolver_match.url_name or 'toggle_task_status' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'tasks' or request.resolver_match.url_name == 'task_create' or 'project_tasks' in request.resolver_match.url_name or 'task_edit' in request.resolver_match.url_name or 'task_delete' in request.resolver_match.url_name or 'toggle_task_status' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span class="ml-3 font-medium">Tâches</span>
+            </a>
+
+            {# Statistiques #}
+            <a href="{% url 'statistics' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'statistics' %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'statistics' %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'statistics' %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                <span class="ml-3 font-medium">Statistiques</span>
+            </a>
+
+            {# Équipes #}
+            <a href="{% url 'teams_list' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'teams_list' or request.resolver_match.url_name == 'create_team' %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'teams_list' or request.resolver_match.url_name == 'create_team' %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'teams_list' or request.resolver_match.url_name == 'create_team' %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"></path>
+                </svg>
+                <span class="ml-3 font-medium">Équipes</span>
+            </a>
+
+            {# Membres #}
+            <a href="{% url 'membres_list' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'membres_list' or request.resolver_match.url_name == 'add_member' or 'edit_member' in request.resolver_match.url_name or 'delete_member' in request.resolver_match.url_name or 'member_detail' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'membres_list' or request.resolver_match.url_name == 'add_member' or 'edit_member' in request.resolver_match.url_name or 'delete_member' in request.resolver_match.url_name or 'member_detail' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'membres_list' or request.resolver_match.url_name == 'add_member' or 'edit_member' in request.resolver_match.url_name or 'delete_member' in request.resolver_match.url_name or 'member_detail' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h-4v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2H1M6 16a6 6 0 016-6h0a6 6 0 016 6m-9-2a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                <span class="ml-3 font-medium">Membres</span>
+            </a>
+        </nav>
+      
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="ml-64 transition-all duration-300" id="main-content">
+        <div class="p-8 bg-gradient-to-br from-yellow-50 to-orange-50 min-h-screen">
+            <div class="mb-8">
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">
+                    Statistiques 
+                    <span class="text-yellow-500 ml-2">📊</span>
+                </h1>
+                <p class="text-gray-600 text-lg">Analysez les performances et tendances de vos projets</p>
+            </div>
+
+            <!-- Métriques principales dynamiques -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 rounded-lg bg-yellow-400">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <span class="text-xs text-gray-500"></span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800">{{ nb_projects }}</h3>
+                    <p class="text-gray-600 text-sm">Projets actifs</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 rounded-lg bg-green-400">
+                            <span class="text-white text-lg">✅</span>
+                        </div>
+                        <span class="text-xs text-gray-500"></span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800">{{ nb_tasks_completed }}</h3>
+                    <p class="text-gray-600 text-sm">Tâches complétées</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 rounded-lg bg-blue-400">
+                            <span class="text-white text-lg">⚡</span>
+                        </div>
+                        <span class="text-xs text-gray-500"></span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800">{{ avg_progress }}%</h3>
+                    <p class="text-gray-600 text-sm">Progression moyenne</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 rounded-lg bg-purple-400">
+                            <span class="text-white text-lg">💰</span>
+                        </div>
+                        <span class="text-xs text-gray-500"></span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800">{{ total_budget|floatformat:2 }}</h3>
+                    <p class="text-gray-600 text-sm">Budget total (FCFA)</p>
+                </div>
+            </div>
+
+            <!-- Graphiques dynamiques -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <!-- Progression des projets -->
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100" style="height:350px;">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6">Budget par Équipe</h3>
+                    <canvas id="teamBudgetChart"></canvas>
+                </div>
+                <!-- Répartition par priorité -->
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100" style="height:350px;">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6">Répartition par Priorité</h3>
+                    <canvas id="priorityChart"></canvas>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Évolution des tâches -->
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100" style="height:350px;">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6">Évolution des Tâches</h3>
+                    <canvas id="taskEvolutionChart"></canvas>
+                </div>
+                <!-- Progression moyenne (camembert) -->
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100 flex flex-col items-center justify-center" style="height:350px;">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6">Progression Moyenne</h3>
+                    <canvas id="avgProgressChart" width="220" height="220"></canvas>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let sidebarCollapsed = false;
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            if (sidebarCollapsed) {
+                sidebar.classList.remove('w-16');
+                sidebar.classList.add('w-64');
+                mainContent.classList.remove('ml-16');
+                mainContent.classList.add('ml-64');
+                sidebarCollapsed = false;
+            } else {
+                sidebar.classList.remove('w-64');
+                sidebar.classList.add('w-16');
+                mainContent.classList.remove('ml-64');
+                mainContent.classList.add('ml-16');
+                sidebarCollapsed = true;
+            }
+        }
+
+        // Budget par équipe
+        new Chart(document.getElementById('teamBudgetChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: {{ team_labels|safe }},
+                datasets: [{
+                    label: 'Budget (M FCFA)',
+                    data: {{ team_budgets|safe }},
+                    backgroundColor: '#fbbf24',
+                    borderColor: '#fbbf24',
+                    borderWidth: 1,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        // Répartition par priorité
+        new Chart(document.getElementById('priorityChart').getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: {{ priority_labels|safe }},
+                datasets: [{
+                    data: {{ priority_counts|safe }},
+                    backgroundColor: ['#ef4444', '#fbbf24', '#10b981'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } }
+            }
+        });
+
+        // Évolution des tâches
+        new Chart(document.getElementById('taskEvolutionChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: {{ months|safe }},
+                datasets: [
+                    {
+                        label: 'Tâches complétées',
+                        data: {{ completed_per_month|safe }},
+                        borderColor: '#10b981',
+                        backgroundColor: '#10b98120',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Nouvelles tâches',
+                        data: {{ new_per_month|safe }},
+                        borderColor: '#3b82f6',
+                        backgroundColor: '#3b82f620',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+
+        // Progression moyenne (camembert)
+        new Chart(document.getElementById('avgProgressChart').getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Progression', 'Reste'],
+                datasets: [{
+                    data: [{{ avg_progress }}, {{ avg_progress_rest }}],
+                    backgroundColor: ['#3b82f6', '#e5e7eb'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                cutout: '80%',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

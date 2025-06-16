@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter un Membre - Gestion de Projets</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Styles personnalisés si nécessaire */
+        .form-input-field {
+            width: 100%;
+            padding: 0.75rem 1rem; /* p-3 px-4 */
+            border: 1px solid #d1d5db; /* border border-gray-300 */
+            border-radius: 0.5rem; /* rounded-lg */
+            outline: none;
+            transition: all 0.2s ease-in-out;
+        }
+        .form-input-field:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(253, 224, 71, 0.5); /* focus:ring-2 focus:ring-yellow-400 */
+            border-color: #f59e0b; /* focus:border-yellow-400 */
+        }
+        /* Style spécifique pour les champs de type text, email, number, date, textarea */
+        input[type="text"].form-input-field,
+        input[type="email"].form-input-field,
+        input[type="number"].form-input-field,
+        input[type="date"].form-input-field,
+        textarea.form-input-field {
+            /* Ajoutez des styles si vous voulez les différencier des selects */
+        }
+        /* Styles pour les messages Django */
+        .message {
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.5rem; /* mb-6 */
+            border-radius: 0.5rem; /* rounded-lg */
+            border-width: 1px; /* border */
+        }
+        .message.success {
+            background-color: #d1fae5; /* bg-green-100 */
+            color: #065f46; /* text-green-700 */
+            border-color: #34d399; /* border-green-400 */
+        }
+        .message.error {
+            background-color: #fee2e2; /* bg-red-100 */
+            color: #991b1b; /* text-red-700 */
+            border-color: #f87171; /* border-red-400 */
+        }
+        .message.info {
+            background-color: #dbeafe; /* bg-blue-100 */
+            color: #1e40af; /* text-blue-700 */
+            border-color: #60a5fa; /* border-blue-400 */
+        }
+        .message.warning {
+            background-color: #fffbeb; /* bg-yellow-100 */
+            color: #92400e; /* text-yellow-700 */
+            border-color: #fbbf24; /* border-yellow-400 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex h-screen">
+    <aside class="w-64 bg-gray-800 text-white p-4 space-y-4">
+        <h1 class="text-2xl font-bold text-yellow-400">GestionPro</h1>
+        <nav>
+            <ul class="space-y-2">
+                <li><a href="{% url 'home' %}" class="block py-2 px-4 rounded hover:bg-gray-700">Tableau de bord</a></li>
+                <li><a href="{% url 'projects' %}" class="block py-2 px-4 rounded hover:bg-gray-700">Projets</a></li>
+                <li><a href="{% url 'tasks' %}" class="block py-2 px-4 rounded hover:bg-gray-700">Tâches</a></li>
+                <li><a href="{% url 'teams_list' %}" class="block py-2 px-4 rounded hover:bg-gray-700">Équipes</a></li>
+                <li><a href="{% url 'membres_list' %}" class="block py-2 px-4 rounded hover:bg-gray-700 bg-gray-700">Membres</a></li>
+                <li><a href="{% url 'statistics' %}" class="block py-2 px-4 rounded hover:bg-gray-700">Statistiques</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="flex-1 p-8 overflow-y-auto">
+        {% if messages %}
+            <div class="mb-6">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="container mx-auto p-6">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">Ajouter un Nouveau Membre</h1>
+
+            <div class="bg-white rounded-lg shadow-md p-6 max-w-lg mx-auto">
+                <form method="post" action="{% url 'add_member' %}"> {# L'action du formulaire utilise le nom d'URL 'add_member' #}
+                    {% csrf_token %}
+
+                    {# Affichage des erreurs non liées aux champs (ex: validation globale du formulaire) #}
+                    {% if form.non_field_errors %}
+                        <div class="bg-red-100 text-red-700 p-3 rounded-lg mb-4 border border-red-400">
+                            <p class="font-bold">Erreur(s) :</p>
+                            <ul class="list-disc ml-5">
+                                {% for error in form.non_field_errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+
+                    <div class="grid grid-cols-1 gap-4">
+                        {% for field in form %}
+                            <div class="mb-4">
+                                <label for="{{ field.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">
+                                    {{ field.label }}:
+                                    {% if field.field.required %}
+                                        <span class="text-red-500">*</span>
+                                    {% endif %}
+                                </label>
+                                {{ field|attr:"class:form-input-field text-lg" }}
+
+                                {% if field.help_text %}
+                                    <p class="text-gray-600 text-xs italic mt-1">{{ field.help_text }}</p>
+                                {% endif %}
+
+                                {% if field.errors %}
+                                    <ul class="text-red-500 text-xs mt-1">
+                                        {% for error in field.errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+
+                        {# Nouveau champ pour la sélection de l'équipe #}
+                        <div class="mb-4">
+                            <label for="id_team_name" class="block text-gray-700 text-sm font-bold mb-2">
+                                Équipe:
+                            </label>
+                            <select id="id_team_name" name="name" class="form-input-field text-lg">
+                                <option value="">Sélectionnez une équipe</option>
+                                {% for team in teams %}
+                                    {# La valeur de l'option est le nom de l'équipe, ce qui est utilisé dans la vue #}
+                                    <option value="{{ team.name }}" {% if member.team.name == team.name %}selected{% endif %}>
+                                        {{ team.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            {# Note: Les erreurs pour ce champ 'team_name' seront affichées via messages Django #}
+                        </div>
+
+                    </div>
+
+                    <div class="flex justify-end mt-6">
+                        <a href="{% url 'membres_list' %}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg transition duration-300 mr-2">Annuler</a>
+                        <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">
+                            Ajouter Membre
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

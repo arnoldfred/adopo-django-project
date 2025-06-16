@@ -1,0 +1,21 @@
+<!-- filepath: d:\PROJET\monprojet\gestiondesprojetsapp\templates\partials\create_team_form.html -->
+<form method="post" hx-post="{% url 'create_team' %}" hx-target="#teams-container" hx-swap="beforeend" hx-on::after-request="document.getElementById('dialog').classList.add('hidden'); this.reset()">
+    {% csrf_token %}
+    <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
+            Nom de l'équipe
+        </label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" name="name" required>
+    </div>
+    <div class="mb-6">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="description">
+            Description
+        </label>
+        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="description" name="description" required></textarea>
+    </div>
+    <div class="flex items-center justify-between">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+            Créer
+        </button>
+    </div>
+</form>

@@ -1,0 +1,282 @@
+<!-- filepath: d:\PROJET\monprojet\templates\index.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Bord - ProjectHub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed left-0 top-0 bg-white shadow-xl transition-all duration-300 w-64 h-screen border-r-4 border-yellow-400 z-50">
+        <div class="p-4 border-b border-yellow-100">
+            <div class="flex items-center justify-between">
+                <h1 class="text-xl font-bold text-gray-800">
+                    <span class="text-yellow-500">Project</span>Hub
+                </h1>
+                <button onclick="toggleSidebar()" class="p-2 rounded-lg hover:bg-yellow-50 transition-colors">
+                    <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <nav class="mt-8">
+            {# Accueil #}
+            <a href="{% url 'home' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'home' %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'home' %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'home' %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                </svg>
+                <span class="ml-3 font-medium">Accueil</span>
+            </a>
+
+            {# Projets #}
+            <a href="{% url 'projects' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'projects' or request.resolver_match.url_name == 'project_create' or request.resolver_match.url_name == 'project_create_htmx' or 'project_edit' in request.resolver_match.url_name or 'project_delete' in request.resolver_match.url_name or 'project_tasks' in request.resolver_match.url_name %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'projects' or request.resolver_match.url_name == 'project_create' or request.resolver_match.url_name == 'project_create_htmx' or 'project_edit' in request.resolver_match.url_name or 'project_delete' in request.resolver_match.url_name or 'project_tasks' in request.resolver_match.url_name %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'projects' or request.resolver_match.url_name == 'project_create' or request.resolver_match.url_name == 'project_create_htmx' or 'project_edit' in request.resolver_match.url_name or 'project_delete' in request.resolver_match.url_name or 'project_tasks' in request.resolver_match.url_name %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                </svg>
+                <span class="ml-3 font-medium">Projets</span>
+            </a>
+
+            {# Tâches #}
+            <a href="{% url 'tasks' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'tasks' or request.resolver_match.url_name == 'task_create' or 'project_tasks' in request.resolver_match.url_name or 'task_edit' in request.resolver_match.url_name or 'task_delete' in request.resolver_match.url_name or 'toggle_task_status' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'tasks' or request.resolver_match.url_name == 'task_create' or 'project_tasks' in request.resolver_match.url_name or 'task_edit' in request.resolver_match.url_name or 'task_delete' in request.resolver_match.url_name or 'toggle_task_status' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'tasks' or request.resolver_match.url_name == 'task_create' or 'project_tasks' in request.resolver_match.url_name or 'task_edit' in request.resolver_match.url_name or 'task_delete' in request.resolver_match.url_name or 'toggle_task_status' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span class="ml-3 font-medium">Tâches</span>
+            </a>
+
+            {# Statistiques #}
+            <a href="{% url 'statistics' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'statistics' %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'statistics' %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'statistics' %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                <span class="ml-3 font-medium">Statistiques</span>
+            </a>
+
+            {# Équipes #}
+            <a href="{% url 'teams_list' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'teams_list' or request.resolver_match.url_name == 'create_team' %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'teams_list' or request.resolver_match.url_name == 'create_team' %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'teams_list' or request.resolver_match.url_name == 'create_team' %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"></path>
+                </svg>
+                <span class="ml-3 font-medium">Équipes</span>
+            </a>
+
+            {# Membres #}
+            <a href="{% url 'membres_list' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'membres_list' or request.resolver_match.url_name == 'add_member' or 'edit_member' in request.resolver_match.url_name or 'delete_member' in request.resolver_match.url_name or 'member_detail' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'membres_list' or request.resolver_match.url_name == 'add_member' or 'edit_member' in request.resolver_match.url_name or 'delete_member' in request.resolver_match.url_name or 'member_detail' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'membres_list' or request.resolver_match.url_name == 'add_member' or 'edit_member' in request.resolver_match.url_name or 'delete_member' in request.resolver_match.url_name or 'member_detail' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h-4v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2H1M6 16a6 6 0 016-6h0a6 6 0 016 6m-9-2a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                <span class="ml-3 font-medium">Membres</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <main class="ml-64 transition-all duration-300" id="main-content">
+        <div class="p-8 bg-gradient-to-br from-yellow-50 to-orange-50 min-h-screen">
+            <div class="mb-8">
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">
+                    Tableau de Bord 
+                    <span class="text-yellow-500 ml-2">⚡</span>
+                </h1>
+                <p class="text-gray-600 text-lg">Vue d'ensemble de tous vos projets en cours</p>
+            </div>
+
+            <!-- Stats Cards dynamiques -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 rounded-lg bg-yellow-400">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-1">{{ nb_projects }}</h3>
+                    <p class="text-gray-600 text-sm mb-2">Projets Actifs</p>
+                    <p class="text-sm font-medium text-yellow-600">+{{ projects_this_month }} ce mois</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 rounded-lg bg-green-400">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-1">{{ nb_tasks_completed }}</h3>
+                    <p class="text-gray-600 text-sm mb-2">Tâches Terminées</p>
+                    <p class="text-sm font-medium text-green-600">{{ tasks_progress_percent }}% vs mois dernier</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 rounded-lg bg-blue-400">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"></path>
+                            </svg>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-1">{{ nb_teams }}</h3>
+                    <p class="text-gray-600 text-sm mb-2">Équipes Actives</p>
+                    <p class="text-sm font-medium text-blue-600">+{{ new_teams }} nouveaux</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 rounded-lg bg-purple-400">
+                            <span class="text-white text-xl">💰</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-1">{{ total_budget }} FCFA</h3>
+                    <p class="text-gray-600 text-sm mb-2">Budget Total</p>
+                    <p class="text-sm font-medium text-purple-600">{{ budget_percent }}% allocation</p>
+                </div>
+            </div>
+
+            <!-- Projets en cours dynamiques -->
+            <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Projets en Cours</h2>
+                    <a href="{% url 'projects' %}" class="bg-yellow-400 hover:bg-yellow-500 text-white px-6 py-2 rounded-lg font-medium transition-all duration-200 hover:scale-105 shadow-lg">
+                        Voir Tous
+                    </a>
+                </div>
+                <div class="space-y-4">
+                    {% for project in projects %}
+                    <div class="border border-gray-200 rounded-lg p-4 hover:border-yellow-300 transition-all duration-200 hover:shadow-md">
+                        <div class="flex items-center justify-between mb-3">
+                            <div>
+                                <h3 class="font-bold text-gray-800 text-lg hover:text-yellow-600 transition-colors">
+                                    <a href="{% url 'project_tasks' project.id %}">{{ project.name }}</a>
+                                </h3>
+                                <p class="text-gray-600 text-sm">{{ project.team.name }}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-bold text-yellow-600 text-lg">{{ project.budget|default:"-" }} FCFA</p>
+                                <div class="flex items-center text-gray-500 text-sm">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    {{ project.deadline|date:"d F Y" }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-sm text-gray-600">Progression</span>
+                                <span class="text-sm font-bold text-yellow-600">
+                                    {% if project.total_tasks > 0 %}
+                                        {% widthratio project.completed_tasks project.total_tasks 100 %}%
+                                    {% else %}
+                                        0%
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3">
+                                <div class="bg-gradient-to-r from-yellow-400 to-yellow-500 h-3 rounded-full transition-all duration-500 shadow-sm"
+                                     style="width: {% if project.total_tasks > 0 %}{% widthratio project.completed_tasks project.total_tasks 100 %}{% else %}0{% endif %}%"></div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">
+                                {{ project.status|capfirst }}
+                            </span>
+                            <span class="text-sm text-gray-500">
+                                {{ project.completed_tasks }}/{{ project.total_tasks }} tâches
+                            </span>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-gray-400 text-center py-8">Aucun projet en cours.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let sidebarCollapsed = false;
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            if (sidebarCollapsed) {
+                sidebar.classList.remove('w-16');
+                sidebar.classList.add('w-64');
+                mainContent.classList.remove('ml-16');
+                mainContent.classList.add('ml-64');
+                sidebarCollapsed = false;
+            } else {
+                sidebar.classList.remove('w-64');
+                sidebar.classList.add('w-16');
+                mainContent.classList.remove('ml-64');
+                mainContent.classList.add('ml-16');
+                sidebarCollapsed = true;
+            }
+        }
+    </script>
+</body>
+</html>

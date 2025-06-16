@@ -1,0 +1,260 @@
+<!-- filepath: d:\PROJET\monprojet\templates\teams.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Équipes - ProjectHub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed left-0 top-0 bg-white shadow-xl transition-all duration-300 w-64 h-screen border-r-4 border-yellow-400 z-40">
+        <div class="p-4 border-b border-yellow-100">
+            <div class="flex items-center justify-between">
+                <h1 class="text-xl font-bold text-gray-800">
+                    <span class="text-yellow-500">Project</span>Hub
+                </h1>
+            </div>
+        </div>
+        <nav class="mt-8">
+            {# Accueil #}
+            <a href="{% url 'home' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'home' %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'home' %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'home' %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                </svg>
+                <span class="ml-3 font-medium">Accueil</span>
+            </a>
+
+            {# Projets #}
+            <a href="{% url 'projects' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'projects' or request.resolver_match.url_name == 'project_create' or request.resolver_match.url_name == 'project_create_htmx' or 'project_edit' in request.resolver_match.url_name or 'project_delete' in request.resolver_match.url_name or 'project_tasks' in request.resolver_match.url_name %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'projects' or request.resolver_match.url_name == 'project_create' or request.resolver_match.url_name == 'project_create_htmx' or 'project_edit' in request.resolver_match.url_name or 'project_delete' in request.resolver_match.url_name or 'project_tasks' in request.resolver_match.url_name %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'projects' or request.resolver_match.url_name == 'project_create' or request.resolver_match.url_name == 'project_create_htmx' or 'project_edit' in request.resolver_match.url_name or 'project_delete' in request.resolver_match.url_name or 'project_tasks' in request.resolver_match.url_name %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                </svg>
+                <span class="ml-3 font-medium">Projets</span>
+            </a>
+
+            {# Tâches #}
+            <a href="{% url 'tasks' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'tasks' or request.resolver_match.url_name == 'task_create' or 'project_tasks' in request.resolver_match.url_name or 'task_edit' in request.resolver_match.url_name or 'task_delete' in request.resolver_match.url_name or 'toggle_task_status' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'tasks' or request.resolver_match.url_name == 'task_create' or 'project_tasks' in request.resolver_match.url_name or 'task_edit' in request.resolver_match.url_name or 'task_delete' in request.resolver_match.url_name or 'toggle_task_status' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'tasks' or request.resolver_match.url_name == 'task_create' or 'project_tasks' in request.resolver_match.url_name or 'task_edit' in request.resolver_match.url_name or 'task_delete' in request.resolver_match.url_name or 'toggle_task_status' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span class="ml-3 font-medium">Tâches</span>
+            </a>
+
+            {# Statistiques #}
+            <a href="{% url 'statistics' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'statistics' %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'statistics' %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'statistics' %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                <span class="ml-3 font-medium">Statistiques</span>
+            </a>
+
+            {# Équipes #}
+            <a href="{% url 'teams_list' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'teams_list' or request.resolver_match.url_name == 'create_team' %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'teams_list' or request.resolver_match.url_name == 'create_team' %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'teams_list' or request.resolver_match.url_name == 'create_team' %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"></path>
+                </svg>
+                <span class="ml-3 font-medium">Équipes</span>
+            </a>
+
+            {# Membres #}
+            <a href="{% url 'membres_list' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'membres_list' or request.resolver_match.url_name == 'add_member' or 'edit_member' in request.resolver_match.url_name or 'delete_member' in request.resolver_match.url_name or 'member_detail' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'membres_list' or request.resolver_match.url_name == 'add_member' or 'edit_member' in request.resolver_match.url_name or 'delete_member' in request.resolver_match.url_name or 'member_detail' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'membres_list' or request.resolver_match.url_name == 'add_member' or 'edit_member' in request.resolver_match.url_name or 'delete_member' in request.resolver_match.url_name or 'member_detail' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h-4v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2H1M6 16a6 6 0 016-6h0a6 6 0 016 6m-9-2a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                <span class="ml-3 font-medium">Membres</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <main class="ml-64 transition-all duration-300" id="main-content">
+        <div class="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100">
+            <div class="p-8">
+                <div class="mb-8 flex justify-between items-center">
+                    <div>
+                        <h1 class="text-4xl font-bold text-gray-800 mb-2 flex items-center">
+                            Nos Équipes
+                            <span class="ml-2">👥</span>
+                        </h1>
+                        <p class="text-gray-600 text-lg">Découvrez les équipes et leurs projets en cours</p>
+                    </div>
+                    <div>
+
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" id="teams-container">
+                    {% for team in teams %}
+                    <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-6 hover:transform hover:scale-102 transition-all duration-300 hover:shadow-xl">
+                        <div class="mb-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <h2 class="text-2xl font-bold text-gray-800 hover:text-yellow-600 transition-colors">
+                                    {{ team.name }}
+                                </h2>
+                                <div class="flex items-center text-yellow-500">
+                                    <svg class="w-6 h-6 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                    </svg>
+                                    <span class="font-bold">{{ team.members.count }}</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-600">{{ team.description }}</p>
+                        </div>
+                        <!-- Progression globale -->
+                        <div class="mb-6">
+                            {% if team.total_tasks > 0 %}
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-medium text-gray-600">Progression des tâches (tous projets)</span>
+                                    <span class="text-lg font-bold text-gray-800">{% widthratio team.completed_tasks team.total_tasks 100 %}%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div class="bg-gradient-to-r from-yellow-400 to-yellow-500 h-3 rounded-full shadow-sm transition-all duration-700" style="width: {% widthratio team.completed_tasks team.total_tasks 100 %}%"></div>
+                                </div>
+                                <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                    <span>{{ team.completed_tasks }} terminées</span>
+                                    <span>{{ team.total_tasks }} au total</span>
+                                </div>
+                            {% else %}
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-medium text-gray-600">Progression des tâches (tous projets)</span>
+                                    <span class="text-lg font-bold text-gray-800">0%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div class="bg-gradient-to-r from-yellow-400 to-yellow-500 h-3 rounded-full shadow-sm transition-all duration-700" style="width: 0%"></div>
+                                </div>
+                                <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                    <span>0 terminées</span>
+                                    <span>0 au total</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <!-- Progression par projet -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center">
+                                <svg class="w-5 h-5 mr-2 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2z"></path>
+                                </svg>
+                                Projets & progression
+                            </h3>
+                            <div class="space-y-4">
+                                {% for project in team.projects.all %}
+                                <div class="bg-gray-50 rounded-lg p-4 shadow-sm">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="font-medium text-gray-800">
+                                            <a href="{% url 'project_tasks' project.id %}" class="hover:underline hover:text-yellow-600 transition-colors">
+                                                {{ project.name }}
+                                            </a>
+                                        </span>
+                                        <span class="text-sm text-gray-600">
+                                            {{ project.completed_tasks }}/{{ project.total_tasks }} tâches terminées
+                                        </span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-3">
+                                        <div class="bg-gradient-to-r from-yellow-400 to-yellow-500 h-3 rounded-full transition-all duration-700"
+                                             style="width: {% if project.total_tasks > 0 %}{% widthratio project.completed_tasks project.total_tasks 100 %}{% else %}0{% endif %}%"></div>
+                                    </div>
+                                    <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                        <span>
+                                            {% if project.total_tasks > 0 %}
+                                                {% widthratio project.completed_tasks project.total_tasks 100 %}%
+                                            {% else %}
+                                                0%
+                                            {% endif %}
+                                        </span>
+                                        <span>
+                                            {{ project.total_tasks }} tâche{{ project.total_tasks|pluralize:"s" }}
+                                        </span>
+                                    </div>
+                                </div>
+                                {% empty %}
+                                <span class="text-gray-400 text-sm">Aucun projet</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <!-- Team Members -->
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center">
+                                <svg class="w-5 h-5 mr-2 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+                                </svg>
+                                Membres de l'équipe
+                            </h3>
+                            <div class="space-y-3">
+                                {% for member in team.members.all %}
+                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg transition-colors hover:bg-orange-50">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl mr-3">{{ member.avatar_emoji }}</span>
+                                        <div>
+                                            <p class="font-medium text-gray-800">
+                                                <a href="{% url 'member_detail' member.id %}" class="hover:underline hover:text-yellow-600 transition-colors">
+                                                    {{ member.name }}
+                                                </a>
+                                            </p>
+                                            <p class="text-sm text-gray-600">{{ member.role }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% empty %}
+                                <span class="text-gray-400 text-sm">Aucun membre</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-span-2 text-center text-gray-400 text-lg py-12">Aucune équipe trouvée.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

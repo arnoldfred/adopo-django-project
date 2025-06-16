@@ -1,0 +1,10 @@
+<!-- filepath: d:\PROJET\monprojet\templates\partials\assigned_to_select.html -->
+<div id="assigned-to-select">
+    <select id="id_assigned_to" name="assigned_to" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 text-lg">
+        <option value="">---------</option>
+        {% for membre in form.fields.assigned_to.queryset %}
+            <option value="{{ membre.id }}">{{ membre.name }}</option>
+        {% endfor %}
+        <option value="add_member" style="color: #f59e0b; font-weight: bold;">➕ Ajouter un membre...</option>
+    </select>
+</div>

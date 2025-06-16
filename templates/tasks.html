@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tâches - ProjectHub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        yellow: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            50: '#fffbeb'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-40 transition-all duration-300">
+        <div class="flex items-center justify-between px-6 py-4 border-b">
+            <span class="text-2xl font-bold text-yellow-500">ProjectHub</span>
+            <button onclick="toggleSidebar()" class="text-gray-400 hover:text-yellow-500 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+        <nav class="mt-8">
+            {# Accueil #}
+            <a href="{% url 'home' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'home' %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'home' %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'home' %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                </svg>
+                <span class="ml-3 font-medium">Accueil</span>
+            </a>
+
+            {# Projets #}
+            <a href="{% url 'projects' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'projects' or request.resolver_match.url_name == 'project_create' or request.resolver_match.url_name == 'project_create_htmx' or 'project_edit' in request.resolver_match.url_name or 'project_delete' in request.resolver_match.url_name or 'project_tasks' in request.resolver_match.url_name %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'projects' or request.resolver_match.url_name == 'project_create' or request.resolver_match.url_name == 'project_create_htmx' or 'project_edit' in request.resolver_match.url_name or 'project_delete' in request.resolver_match.url_name or 'project_tasks' in request.resolver_match.url_name %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'projects' or request.resolver_match.url_name == 'project_create' or request.resolver_match.url_name == 'project_create_htmx' or 'project_edit' in request.resolver_match.url_name or 'project_delete' in request.resolver_match.url_name or 'project_tasks' in request.resolver_match.url_name %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                </svg>
+                <span class="ml-3 font-medium">Projets</span>
+            </a>
+
+            {# Tâches #}
+            <a href="{% url 'tasks' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'tasks' or request.resolver_match.url_name == 'task_create' or 'project_tasks' in request.resolver_match.url_name or 'task_edit' in request.resolver_match.url_name or 'task_delete' in request.resolver_match.url_name or 'toggle_task_status' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'tasks' or request.resolver_match.url_name == 'task_create' or 'project_tasks' in request.resolver_match.url_name or 'task_edit' in request.resolver_match.url_name or 'task_delete' in request.resolver_match.url_name or 'toggle_task_status' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'tasks' or request.resolver_match.url_name == 'task_create' or 'project_tasks' in request.resolver_match.url_name or 'task_edit' in request.resolver_match.url_name or 'task_delete' in request.resolver_match.url_name or 'toggle_task_status' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span class="ml-3 font-medium">Tâches</span>
+            </a>
+
+            {# Statistiques #}
+            <a href="{% url 'statistics' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'statistics' %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'statistics' %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'statistics' %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                <span class="ml-3 font-medium">Statistiques</span>
+            </a>
+
+            {# Équipes #}
+            <a href="{% url 'teams_list' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'teams_list' or request.resolver_match.url_name == 'create_team' %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'teams_list' or request.resolver_match.url_name == 'create_team' %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'teams_list' or request.resolver_match.url_name == 'create_team' %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"></path>
+                </svg>
+                <span class="ml-3 font-medium">Équipes</span>
+            </a>
+
+            {# Membres #}
+            <a href="{% url 'membres_list' %}" class="w-full flex items-center px-4 py-3 text-left transition-all duration-200 relative
+                {% if request.resolver_match.url_name == 'membres_list' or request.resolver_match.url_name == 'add_member' or 'edit_member' in request.resolver_match.url_name or 'delete_member' in request.resolver_match.url_name or 'member_detail' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}
+                    bg-yellow-400 text-white shadow-lg
+                {% else %}
+                    hover:bg-yellow-50 text-gray-700 hover:text-yellow-600
+                {% endif %}">
+                {% if request.resolver_match.url_name == 'membres_list' or request.resolver_match.url_name == 'add_member' or 'edit_member' in request.resolver_match.url_name or 'delete_member' in request.resolver_match.url_name or 'member_detail' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-600"></div>
+                {% endif %}
+                <svg class="w-5 h-5 {% if request.resolver_match.url_name == 'membres_list' or request.resolver_match.url_name == 'add_member' or 'edit_member' in request.resolver_match.url_name or 'delete_member' in request.resolver_match.url_name or 'member_detail' in request.resolver_match.url_name or 'member_tasks' in request.resolver_match.url_name %}text-white{% else %}text-yellow-500{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h-4v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2H1M6 16a6 6 0 016-6h0a6 6 0 016 6m-9-2a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                <span class="ml-3 font-medium">Membres</span>
+            </a>
+        </nav>
+
+        <div class="absolute bottom-0 left-0 w-full border-t p-4 text-center text-gray-500 text-sm">
+            &copy; 2023 ProjectHub. Tous droits réservés.
+        </div>
+    </aside>
+
+    <main class="ml-64 transition-all duration-300" id="main-content">
+        <div class="p-8 bg-gradient-to-br from-yellow-50 to-orange-50 min-h-screen">
+            <div class="mb-8">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <a href="{% url 'projects' %}" class="flex items-center text-yellow-600 hover:text-yellow-700 mb-4 transition-colors">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                            Retour aux projets
+                        </a>
+                        {% if project %}
+                            <h1 class="text-4xl font-bold text-gray-800 mb-2">
+                                Tâches du projet : {{ project.name }}
+                                <span class="text-yellow-500 ml-2">✅</span>
+                            </h1>
+                        {% else %}
+                            <h1 class="text-4xl font-bold text-gray-800 mb-2">
+                                Toutes les tâches
+                                <span class="text-yellow-500 ml-2">✅</span>
+                            </h1>
+                        {% endif %}
+                        <p class="text-gray-600 text-lg">
+                            Gérez les tâches{% if project %} du projet{% endif %}
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="mb-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-medium text-gray-700">Progression</span>
+                        <span id="progressPercentage" class="font-bold text-yellow-600">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+                        <div id="progressBar" class="bg-yellow-400 h-3 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-500 mt-2">
+                        <span id="completedTasks">0 tâche terminée</span>
+                        <span id="remainingTasks">0 tâche restante</span>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 mb-8">
+                    <button id="filter-all" onclick="filterTasks('all')" class="px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center bg-yellow-400 text-white shadow-lg">
+                        Toutes <span class="ml-2 bg-white text-yellow-600 rounded-full px-2 py-0.5 text-xs font-bold" id="count-all">0</span>
+                    </button>
+                    <button id="filter-pending" onclick="filterTasks('pending')" class="px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center bg-white text-gray-700 hover:bg-yellow-50 border border-gray-200">
+                        À faire <span class="ml-2 bg-gray-100 text-gray-600 rounded-full px-2 py-0.5 text-xs font-bold" id="count-pending">0</span>
+                    </button>
+                    <button id="filter-completed" onclick="filterTasks('completed')" class="px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center bg-white text-gray-700 hover:bg-yellow-50 border border-gray-200">
+                        Terminées <span class="ml-2 bg-gray-100 text-gray-600 rounded-full px-2 py-0.5 text-xs font-bold" id="count-completed">0</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="space-y-4" id="tasksList">
+                {% for task in tasks %}
+                    {% include "partials/task_item.html" %}
+                {% endfor %}
+                <div class="text-center py-12 hidden" id="noTasks">
+                    <div class="text-gray-400 text-6xl mb-4">📝</div>
+                    <h3 class="text-xl font-bold text-gray-600 mb-2">Aucune tâche trouvée</h3>
+                    <p class="text-gray-500">Toutes vos tâches sont terminées ! 🎉</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let sidebarCollapsed = false;
+        let currentFilter = 'all'; // Initialisation du filtre
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            if (sidebarCollapsed) {
+                sidebar.classList.remove('w-16');
+                sidebar.classList.add('w-64');
+                mainContent.classList.remove('ml-16');
+                mainContent.classList.add('ml-64');
+                sidebarCollapsed = false;
+            } else {
+                sidebar.classList.remove('w-64');
+                sidebar.classList.add('w-16');
+                mainContent.classList.remove('ml-64');
+                mainContent.classList.add('ml-16');
+                sidebarCollapsed = true;
+            }
+        }
+
+        // --- Déplacement de la logique de mise à jour des compteurs/barre dans updateProgress ---
+        function updateProgress() {
+            const tasks = document.querySelectorAll('.task-item');
+            const completedTasks = document.querySelectorAll('.task-item[data-status="completed"]');
+            const progressPercentage = tasks.length ? Math.round((completedTasks.length / tasks.length) * 100) : 0;
+
+            document.getElementById('progressPercentage').textContent = `${progressPercentage}%`;
+            document.getElementById('progressBar').style.width = `${progressPercentage}%`;
+            document.getElementById('completedTasks').textContent = `${completedTasks.length} tâche${completedTasks.length > 1 ? 's' : ''} terminée${completedTasks.length > 1 ? 's' : ''}`;
+            document.getElementById('remainingTasks').textContent = `${tasks.length - completedTasks.length} tâche${tasks.length - completedTasks.length > 1 ? 's' : ''} restante${tasks.length - completedTasks.length > 1 ? 's' : ''}`;
+
+            // Mettre à jour les compteurs des boutons de filtre
+            document.getElementById('count-all').textContent = tasks.length;
+            document.getElementById('count-pending').textContent = tasks.length - completedTasks.length;
+            document.getElementById('count-completed').textContent = completedTasks.length;
+
+            // Ré-appliquer le filtre après la mise à jour des données (important pour le message "Aucune tâche")
+            filterTasks(currentFilter);
+        }
+
+        function filterTasks(filter) {
+            currentFilter = filter; // Mettre à jour le filtre courant
+            const tasks = document.querySelectorAll('.task-item');
+            const noTasks = document.getElementById('noTasks');
+            const filterButtons = ['filter-all', 'filter-pending', 'filter-completed'];
+            let visibleCount = 0;
+
+            // Update button styles
+            filterButtons.forEach(id => {
+                const button = document.getElementById(id);
+                if (button) {
+                    if (id === `filter-${filter}`) {
+                        button.className = 'px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center bg-yellow-400 text-white shadow-lg';
+                    } else {
+                        button.className = 'px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center bg-white text-gray-700 hover:bg-yellow-50 border border-gray-200';
+                    }
+                }
+            });
+
+            // Filter tasks visibility
+            tasks.forEach(task => {
+                const status = task.dataset.status; // Lire le statut actuel de l tâche
+                let shouldShow = false;
+
+                if (filter === 'all') {
+                    shouldShow = true;
+                } else if (filter === 'pending' && status === 'pending') {
+                    shouldShow = true;
+                } else if (filter === 'completed' && status === 'completed') {
+                    shouldShow = true;
+                }
+
+                if (shouldShow) {
+                    task.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    task.style.display = 'none';
+                }
+            });
+
+            // Afficher ou cacher le message "Aucune tâche trouvée"
+            if (noTasks) {
+                if (visibleCount === 0) {
+                    noTasks.classList.remove('hidden');
+                } else {
+                    noTasks.classList.add('hidden');
+                }
+            }
+            // NE PAS appeler updateProgress() ici, car updateProgress() appelle déjà filterTasks().
+            // Cela éviterait une boucle infinie ou des appels redondants.
+        }
+
+        function toggleTaskVisual(taskId) {
+            const taskElement = document.getElementById(`task-${taskId}`);
+            if (!taskElement) return;
+
+            const currentStatus = taskElement.dataset.status;
+            const newStatus = (currentStatus === 'completed') ? 'pending' : 'completed';
+
+            // 1. Mettre à jour l'attribut data-status
+            taskElement.dataset.status = newStatus;
+
+            // 2. Mettre à jour les classes CSS de l'élément de la tâche (le cadre)
+            if (newStatus === 'completed') {
+                taskElement.classList.add('border-green-200', 'bg-green-50');
+                taskElement.classList.remove('border-gray-100', 'hover:border-yellow-300');
+            } else {
+                taskElement.classList.remove('border-green-200', 'bg-green-50');
+                taskElement.classList.add('border-gray-100', 'hover:border-yellow-300');
+            }
+
+            // 3. Mettre à jour les classes CSS du titre et de la description
+            const titleElement = taskElement.querySelector('h3');
+            const descriptionElement = taskElement.querySelector('p');
+            if (titleElement) {
+                if (newStatus === 'completed') {
+                    titleElement.classList.add('text-green-700', 'line-through');
+                    titleElement.classList.remove('text-gray-800');
+                } else {
+                    titleElement.classList.remove('text-green-700', 'line-through');
+                    titleElement.classList.add('text-gray-800');
+                }
+            }
+            if (descriptionElement) {
+                if (newStatus === 'completed') {
+                    descriptionElement.classList.add('line-through');
+                } else {
+                    descriptionElement.classList.remove('line-through');
+                }
+            }
+
+            // 4. Mettre à jour l'icône de cochage
+            const button = taskElement.querySelector('button[type="submit"]');
+            if (button) {
+                button.querySelectorAll('svg').forEach(svg => svg.remove());
+                let newSvg;
+                if (newStatus === 'completed') {
+                    newSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                    newSvg.setAttribute("class", "w-6 h-6 text-green-500");
+                    newSvg.setAttribute("fill", "none");
+                    newSvg.setAttribute("stroke", "currentColor");
+                    newSvg.setAttribute("viewBox", "0 0 24 24");
+                    newSvg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>';
+                } else {
+                    newSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                    newSvg.setAttribute("class", "w-6 h-6 text-gray-400 hover:text-yellow-500");
+                    newSvg.setAttribute("fill", "none");
+                    newSvg.setAttribute("stroke", "currentColor");
+                    newSvg.setAttribute("viewBox", "0 0 24 24");
+                    newSvg.innerHTML = '<circle cx="12" cy="12" r="10"></circle>';
+                }
+                button.prepend(newSvg);
+            }
+
+            // Mettre à jour la progression et les compteurs IMMEDIATEMENT après la bascule visuelle.
+            updateProgress();
+        }
+
+        // Exécute au chargement initial de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+        });
+
+        // Met à jour la progression et les filtres après que HTMX a échangé du contenu
+        // (par ex., après la réponse du serveur pour le cochage/décochage).
+        // C'est important pour la persistance si un filtre est actif ou si le data-status
+        // est modifié par le serveur d'une manière que le JS local n'aurait pas anticipée.
+        document.body.addEventListener('htmx:afterSwap', function(evt) {
+            updateProgress();
+        });
+    </script>
+</body>
+</html>

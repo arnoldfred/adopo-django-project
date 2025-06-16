@@ -1,0 +1,10 @@
+<!-- filepath: d:\PROJET\monprojet\templates\partials\project_select.html -->
+<div id="project-select">
+    <select id="id_project" name="project" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 text-lg">
+        <option value="">---------</option>
+        {% for project in form.fields.project.queryset %}
+            <option value="{{ project.id }}">{{ project.name }}</option>
+        {% endfor %}
+        <option value="add_project" style="color: #f59e0b; font-weight: bold;">➕ Ajouter un projet...</option>
+    </select>
+</div>
