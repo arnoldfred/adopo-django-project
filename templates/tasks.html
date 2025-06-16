@@ -141,13 +141,14 @@
             <div class="mb-8">
                 <div class="flex justify-between items-center mb-6">
                     <div>
-                        <a href="{% url 'projects' %}" class="flex items-center text-yellow-600 hover:text-yellow-700 mb-4 transition-colors">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                            </svg>
-                            Retour aux projets
-                        </a>
+                        {# Le lien "Retour aux projets" n'est affiché que si la page est chargée depuis un contexte de projet #}
                         {% if project %}
+                            <a href="{% url 'projects' %}" class="flex items-center text-yellow-600 hover:text-yellow-700 mb-4 transition-colors">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                                Retour aux projets
+                            </a>
                             <h1 class="text-4xl font-bold text-gray-800 mb-2">
                                 Tâches du projet : {{ project.name }}
                                 <span class="text-yellow-500 ml-2">✅</span>
@@ -163,6 +164,14 @@
                         </p>
                     </div>
 
+                    {# Nouveau bouton : Créer une tâche #}
+                    <a href="{% url 'task_create' %}{% if project %}?project={{ project.id }}{% endif %}"
+                       class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 flex items-center whitespace-nowrap">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Nouvelle tâche
+                    </a>
                 </div>
 
                 <div class="mb-6">
@@ -375,7 +384,15 @@
         // C'est important pour la persistance si un filtre est actif ou si le data-status
         // est modifié par le serveur d'une manière que le JS local n'aurait pas anticipée.
         document.body.addEventListener('htmx:afterSwap', function(evt) {
-            updateProgress();
+            // Vérifier si l'élément parent qui contient les tâches a été mis à jour
+            if (evt.detail.target.id === 'tasksList') {
+                updateProgress();
+            }
+            // Si la requête HTMX ne met à jour qu'une seule tâche (par exemple, un toggle de statut),
+            // il est plus efficace d'appeler updateProgress directement via toggleTaskVisual
+            // plutôt que de dépendre uniquement de htmx:afterSwap pour des changements granulaires.
+            // Cependant, htmx:afterSwap est utile pour les rechargements de liste entiers.
+            updateProgress(); // S'assurer que la progression est toujours à jour
         });
     </script>
 </body>
