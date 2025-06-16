@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 16 juin 2025 à 06:38
+-- Généré le : lun. 16 juin 2025 à 17:59
 -- Version du serveur : 8.2.0
 -- Version de PHP : 8.2.13
 
@@ -299,7 +299,7 @@ CREATE TABLE IF NOT EXISTS `gestiondesprojetsapp_member` (
   `team_id` bigint NOT NULL,
   PRIMARY KEY (`id`),
   KEY `gestiondesprojetsapp_member_team_id_6e6f0108` (`team_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `gestiondesprojetsapp_member`
@@ -308,7 +308,22 @@ CREATE TABLE IF NOT EXISTS `gestiondesprojetsapp_member` (
 INSERT INTO `gestiondesprojetsapp_member` (`id`, `name`, `role`, `email`, `skills`, `status`, `avatar_emoji`, `team_id`) VALUES
 (1, 'John Doe', 'Developer', 'john.doe@example.com', 'Python, Django, JavaScript', 'Active', '😎', 1),
 (3, 'Peter Jones', 'Project Manager', 'peter.jones@example.com', 'Agile, Scrum, Kanban', 'Active', '💼', 1),
-(4, 'Alice Brown', 'QA Engineer', 'alice.brown@example.com', 'Testing, Selenium, JUnit', 'Active', '🐞', 2);
+(4, 'Alice Brown', 'QA Engineer', 'alice.brown@example.com', 'Testing, Selenium, JUnit', 'Active', '🐞', 2),
+(5, 'Emma Smith', 'Designer', 'emma.smith@example.com', 'UI/UX, Figma', 'Active', '🎨', 1),
+(6, 'David Johnson', 'Backend Developer', 'david.johnson@example.com', 'Python, Django, REST API', 'Active', '💻', 1),
+(7, 'Sophia Martinez', 'Frontend Developer', 'sophia.martinez@example.com', 'HTML, CSS, JavaScript', 'Active', '🌟', 1),
+(8, 'James Wilson', 'Data Analyst', 'james.wilson@example.com', 'SQL, Pandas, Excel', 'Active', '📊', 2),
+(9, 'Olivia Taylor', 'Product Manager', 'olivia.taylor@example.com', 'Agile, Scrum', 'Active', '📌', 2),
+(10, 'Ethan Brown', 'DevOps Engineer', 'ethan.brown@example.com', 'Docker, Kubernetes', 'Active', '🚀', 3),
+(11, 'Isabella White', 'Security Analyst', 'isabella.white@example.com', 'PenTesting, Cybersecurity', 'Active', '🔒', 3),
+(12, 'Michael Harris', 'QA Lead', 'michael.harris@example.com', 'Testing, Selenium', 'Active', '🛠️', 2),
+(13, 'Charlotte Lewis', 'Tech Writer', 'charlotte.lewis@example.com', 'Documentation, Editing', 'Active', '✍️', 3),
+(14, 'Alexander Walker', 'Project Coordinator', 'alexander.walker@example.com', 'Scheduling, Management', 'Active', '📅', 1),
+(15, 'Emily Hall', 'Support Specialist', 'emily.hall@example.com', 'Customer Relations, Helpdesk', 'Active', '📞', 2),
+(16, 'Benjamin Allen', 'Marketing Strategist', 'benjamin.allen@example.com', 'SEO, Content Creation', 'Active', '📢', 3),
+(17, 'Lucas Young', 'AI Engineer', 'lucas.young@example.com', 'Machine Learning, NLP', 'Active', '🤖', 3),
+(18, 'Mia King', 'Community Manager', 'mia.king@example.com', 'Social Media, Engagement', 'Active', '💬', 1),
+(19, 'William Scott', 'Operations Manager', 'william.scott@example.com', 'Logistics, Strategy', 'Active', '⚙️', 2);
 
 -- --------------------------------------------------------
 
@@ -366,7 +381,7 @@ CREATE TABLE IF NOT EXISTS `gestiondesprojetsapp_task` (
   PRIMARY KEY (`id`),
   KEY `gestiondesprojetsapp_task_assigned_to_id_3b4d50cd` (`assigned_to_id`),
   KEY `gestiondesprojetsapp_task_project_id_3720e0df` (`project_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `gestiondesprojetsapp_task`
@@ -375,7 +390,7 @@ CREATE TABLE IF NOT EXISTS `gestiondesprojetsapp_task` (
 INSERT INTO `gestiondesprojetsapp_task` (`id`, `title`, `description`, `priority`, `status`, `due_date`, `created_at`, `updated_at`, `assigned_to_id`, `project_id`) VALUES
 (1, 'Conception de la maquette', 'Créer une maquette pour la plateforme web', 'Haute', 'completed', '2025-07-01', '2025-06-15 23:23:13.000000', '2025-06-16 04:40:04.075215', 1, 1),
 (2, 'Développement du backend', 'Implémentation du serveur et de la base de données', 'Élevée', 'pending', '2025-08-15', '2025-06-15 23:23:13.000000', '2025-06-16 04:39:53.736147', 2, 1),
-(3, 'Analyse des données clients', 'Explorer les tendances et visualisations pertinentes', 'Moyenne', 'En attente', '2025-10-01', '2025-06-15 23:23:13.000000', '2025-06-15 23:23:13.000000', 3, 2),
+(3, 'Analyse des données clients', 'Explorer les tendances et visualisations pertinentes', 'Moyenne', 'pending', '2025-10-01', '2025-06-15 23:23:13.000000', '2025-06-16 17:39:17.716632', 3, 2),
 (4, 'Optimisation du code', 'Améliorer la performance des scripts existants', 'Haute', 'completed', '2025-09-30', '2025-06-15 23:23:13.000000', '2025-06-15 23:59:09.256456', 4, 3),
 (5, 'Migration des données', 'Préparer et transférer les données vers le cloud', 'Moyenne', 'Non commen', '2025-09-15', '2025-06-15 23:23:13.000000', '2025-06-15 23:23:13.000000', NULL, 4),
 (6, 'Configuration de l\'hébergement', 'Mettre en place l\'architecture cloud', 'Élevée', 'Planifié', '2025-10-05', '2025-06-15 23:23:13.000000', '2025-06-15 23:23:13.000000', 6, 4),
@@ -384,14 +399,15 @@ INSERT INTO `gestiondesprojetsapp_task` (`id`, `title`, `description`, `priority
 (9, 'Déploiement de l\'application', 'Publier la plateforme en ligne', 'Critique', 'completed', '2025-12-20', '2025-06-15 23:23:13.000000', '2025-06-16 04:47:23.512701', 9, 1),
 (10, 'Rapport final', 'Rédiger et présenter les résultats du projet', 'Moyenne', 'completed', '2025-12-31', '2025-06-15 23:23:13.000000', '2025-06-15 23:37:51.317200', 10, 2),
 (11, 'Flutter Tache', 'Futter Tache', 'medium', 'completed', '2025-06-22', '2025-06-15 23:55:25.604226', '2025-06-15 23:55:58.418518', NULL, 6),
-(12, 'Flutter Tache 2', 'Flutter Tache 2', 'high', 'pending', '2025-06-26', '2025-06-15 23:56:54.686643', '2025-06-16 01:57:24.271530', NULL, 6),
-(13, 'hsdhsjh', 'dcjldicjd', 'low', 'pending', '2025-06-16', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 1, 3),
+(12, 'Flutter Tache 2', 'Flutter Tache 2', 'high', 'completed', '2025-06-26', '2025-06-15 23:56:54.686643', '2025-06-16 17:39:08.839245', NULL, 6),
+(13, 'hsdhsjh', 'dcjldicjd', 'low', 'completed', '2025-06-16', '0000-00-00 00:00:00.000000', '2025-06-16 17:39:10.259832', 1, 3),
 (14, 'Bosser ECUE1', 'bossons ECUE 1', 'high', 'pending', '2025-06-16', '0000-00-00 00:00:00.000000', '2025-06-16 04:18:28.949606', 4, 8),
 (15, 'Bosser ECUE 2', 'Bosser ECUE 2', 'high', 'completed', '2025-06-28', '2025-06-16 02:29:41.431747', '2025-06-16 02:29:41.431778', 4, 2),
 (16, 'Data', 'Data', 'high', 'completed', '2025-06-16', '0000-00-00 00:00:00.000000', '2025-06-16 02:37:33.710370', NULL, 9),
-(17, 'Perfect Tâche 3', 'ssd', 'high', 'pending', '2025-06-20', '2025-06-16 02:34:39.122223', '2025-06-16 02:34:39.122278', 4, 2),
-(18, 'Ajout de tâche', 'ajout de tâche', 'high', 'pending', '2025-06-20', '2025-06-16 02:35:39.793282', '2025-06-16 02:35:39.793332', 4, 3),
-(19, 'Dataming', 'data', 'high', 'completed', '2025-06-20', '2025-06-16 02:37:07.398329', '2025-06-16 02:37:45.133010', 4, 9);
+(17, 'Perfect Tâche 3', 'ssd', 'high', 'completed', '2025-06-20', '2025-06-16 02:34:39.122223', '2025-06-16 17:39:08.847836', 4, 2),
+(18, 'Ajout de tâche', 'ajout de tâche', 'high', 'completed', '2025-06-20', '2025-06-16 02:35:39.793282', '2025-06-16 17:39:08.827671', 4, 3),
+(19, 'Dataming', 'data', 'high', 'completed', '2025-06-20', '2025-06-16 02:37:07.398329', '2025-06-16 02:37:45.133010', 4, 9),
+(20, 'NOuveau Test', 'nouveau test', 'high', 'completed', '2025-06-28', '2025-06-16 17:38:46.792744', '2025-06-16 17:39:04.854942', 3, 8);
 
 -- --------------------------------------------------------
 
